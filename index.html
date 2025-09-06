@@ -1,67 +1,397 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharat Kumar Jalan - Portfolio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS for styling -->
-    <script src="script.js" defer></script> <!-- Link to external JS for animations -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bharat Kumar Jalan - Professional Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Reset and base */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    /* Header */
+    header {
+      background-color: #2563eb;
+      color: white;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+      backdrop-filter: saturate(180%) blur(20px);
+      transition: background-color 0.3s ease;
+    }
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      padding: 1rem 2rem;
+      margin: 0;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #93c5fd;
+      transition: width 0.3s ease, left 0.3s ease;
+      border-radius: 2px;
+    }
+    nav a:hover,
+    nav a:focus {
+      background-color: #1d4ed8;
+      transform: scale(1.05);
+      outline: none;
+    }
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Section base */
+    section {
+      padding: 6rem 1.5rem 3rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      border-radius: 0.5rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(40px);
+      animation-fill-mode: forwards;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      animation-name: fadeInUp;
+      animation-duration: 0.8s;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Headings */
+    h1, h2, h3 {
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #1e40af;
+      position: relative;
+    }
+    h1 {
+      font-size: 2.75rem;
+      text-align: center;
+      margin-top: 5rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      animation: slideInLeft 1s ease forwards;
+      opacity: 0;
+    }
+    h1.visible {
+      opacity: 1;
+      animation-name: slideInLeft;
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    h2 {
+      font-size: 2rem;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 0.3rem;
+      margin-bottom: 2rem;
+    }
+    p, li {
+      line-height: 1.7;
+      font-size: 1.05rem;
+      color: #374151;
+    }
+    ul {
+      padding-left: 1.5rem;
+      margin-top: 0.75rem;
+    }
+    ul li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.2rem;
+      color: #2563eb;
+      font-weight: 600;
+    }
+    ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-size: 1.5rem;
+      line-height: 1;
+      top: 0;
+    }
+
+    /* Contact info */
+    .contact-info p {
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    /* Map */
+    .map-container iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+      transition: transform 0.3s ease;
+    }
+    .map-container iframe:hover {
+      transform: scale(1.02);
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 1.25rem;
+    }
+    .gallery img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 0.75rem;
+      box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      filter: grayscale(20%);
+    }
+    .gallery img:hover,
+    .gallery img:focus {
+      transform: scale(1.1) rotate(1deg);
+      box-shadow: 0 12px 30px rgb(0 0 0 / 0.2);
+      filter: grayscale(0%);
+      outline: none;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Skills */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .skill-item {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 1rem;
+      user-select: none;
+      box-shadow: 0 4px 12px rgb(59 130 246 / 0.5);
+      transition: transform 0.3s ease;
+    }
+    .skill-item:hover,
+    .skill-item:focus {
+      transform: scale(1.1);
+      outline: none;
+      box-shadow: 0 6px 20px rgb(37 99 235 / 0.8);
+      cursor: default;
+    }
+
+    /* Profile image */
+    .profile-img {
+      display: block;
+      margin: 0 auto 2rem;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.15);
+      border: 4px solid #2563eb;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px 4px rgba(37, 99, 235, 0.6);
+      }
+      50% {
+        box-shadow: 0 0 30px 8px rgba(37, 99, 235, 0.3);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      section {
+        padding: 5rem 1rem 2rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      nav ul {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Bharat Kumar Jalan</h1>
-        <nav>
-            <ul class="tab-section">
-                <li class="tab" onclick="openTab(event, 'home')">Home</li>
-                <li class="tab" onclick="openTab(event, 'about')">About</li>
-                <li class="tab" onclick="openTab(event, 'gallery')">Gallery</li>
-                <li class="tab" onclick="openTab(event, 'skills')">Skills and Experience</li>
-                <li class="tab" onclick="openTab(event, 'location')">Location</li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#home" tabindex="0">Home</a></li>
+        <li><a href="#about" tabindex="0">About</a></li>
+        <li><a href="#experience" tabindex="0">Experience</a></li>
+        <li><a href="#skills" tabindex="0">Skills</a></li>
+        <li><a href="#gallery" tabindex="0">Gallery</a></li>
+        <li><a href="#contact" tabindex="0">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div id="home" class="tab-content">
-        <h2>Welcome to My Portfolio</h2>
-        <p>Explore my skills, experience, and projects.</p>
-    </div>
+  <main>
+    <!-- Home Section -->
+    <section id="home" aria-label="Home" class="animate-section">
+      <img
+        src="https://randomuser.me/api/portraits/men/75.jpg"
+        alt="Profile photo of Bharat Kumar Jalan"
+        class="profile-img"
+        loading="lazy"
+      />
+      <h1 class="section-title">Bharat Kumar Jalan</h1>
+      <p style="text-align:center; font-size:1.2rem; max-width:600px; margin: 0 auto; color:#374151;">
+        Bachelor of Commerce graduate from Pandit Deendayal Upadhyaya Shekhawati University with demonstrated teamwork and data arrangement skills gained through projects at The Rural Youth Fellowship. Passionate about bridging the gap between classroom learning and workplace challenges through innovative thinking and adaptability. Possess an analytical mindset and collaborative approach to drive success in future endeavors.
+      </p>
+    </section>
 
-    <div id="about" class="tab-content" style="display:none;">
-        <h2>About Me</h2>
-        <p>Bachelor of Commerce graduate from Pandit Deendayal Upadhyaya Shekhawati University with a passion for bridging the gap between classroom learning and workplace challenges.</p>
-        <p>Contact: <a href="mailto:bharatjalan02@gmail.com">bharatjalan02@gmail.com</a></p>
-        <p>Phone: 7427800483</p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/bharat-jalan-419513274?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">LinkedIn Profile</a></p>
-        <p>GitHub: <a href="https://github.com/bk066" target="_blank">GitHub Profile</a></p>
-    </div>
+    <!-- About Section -->
+    <section id="about" aria-label="About Bharat Kumar Jalan" class="animate-section">
+      <h2>About</h2>
+      <p><strong>Education:</strong> Bachelor of Commerce in Accountancy, Pandit Deendayal Upadhyaya Shekhawati University, Sikar (June 2022 - July 2025)</p>
+      <p><strong>Specialization:</strong> Accounting, Finance and Marketing</p>
+      <p><strong>Key Subjects:</strong> Accountancy and Business Statistics, Economic Administration and Financial Management, Business Administration.</p>
+      <p><strong>Summary:</strong> Led a team of 5 fellows to successfully execute Independence Day events. Collaborated with a diverse team to design and implement biographies. Conducted teaching sessions and workshops on topics like Basic computer literacy and Effective Communication. Organized learning materials and tracked attendance.</p>
+    </section>
 
-    <div id="gallery" class="tab-content" style="display:none;">
-        <h2>Gallery</h2>
-        <p>Images and projects will be displayed here.</p>
-        <!-- Add images or project links here -->
-    </div>
+    <!-- Experience Section -->
+    <section id="experience" aria-label="Experience" class="animate-section">
+      <h2>Experience as a Fellow in the Fellowship</h2>
+      <ul>
+        <li><strong>Team Management:</strong> Led a team of 5 fellows to successfully execute Independence Day events (June 2022 - May 2025).</li>
+        <li><strong>Team Work and Collaboration:</strong> Collaborated with a diverse team of fellows to design and implement biography projects.</li>
+        <li><strong>Teaching & Workshops:</strong> Conducted engaging teaching sessions and facilitated interactive workshops on topics such as Basic computer literacy and Effective Communication.</li>
+        <li><strong>Material Management:</strong> Organized and maintained learning materials ensuring accessibility for fellows and students.</li>
+        <li><strong>Attendance Tracking:</strong> Accurately tracked and reported daily attendance of fellows and participants.</li>
+        <li><strong>Stage Feedback Team Collaboration:</strong> Worked closely with team members to review company applications, provide constructive feedback, and deliver actionable suggestions.</li>
+      </ul>
+    </section>
 
-    <div id="skills" class="tab-content" style="display:none;">
-        <h2>Skills and Experience</h2>
-        <ul>
-            <li>MS OFFICE</li>
-            <li>Team Work</li>
-            <li>Collaboration</li>
-            <li>Project Management</li>
-            <li>Google Analytics</li>
-            <li>Leadership</li>
-            <li>Canva</li>
-            <li>Digital Marketing</li>
-        </ul>
-    </div>
+    <!-- Skills Section -->
+    <section id="skills" aria-label="Skills" class="animate-section">
+      <h2>Skills</h2>
+      <div class="skills-list" role="list">
+        <span class="skill-item" role="listitem" tabindex="0">MS Office</span>
+        <span class="skill-item" role="listitem" tabindex="0">Team Work</span>
+        <span class="skill-item" role="listitem" tabindex="0">Collaboration</span>
+        <span class="skill-item" role="listitem" tabindex="0">Project Management</span>
+        <span class="skill-item" role="listitem" tabindex="0">Google Analytics</span>
+        <span class="skill-item" role="listitem" tabindex="0">Leadership</span>
+        <span class="skill-item" role="listitem" tabindex="0">Canva</span>
+        <span class="skill-item" role="listitem" tabindex="0">Microsoft Office</span>
+        <span class="skill-item" role="listitem" tabindex="0">Digital Marketing</span>
+      </div>
+      <p style="margin-top:1rem; color:#374151;"><strong>Languages:</strong> Hindi, English, Marwadi</p>
+      <p style="color:#374151;"><strong>Strengths:</strong> Quick learner, team player, adaptable, and good communication skills.</p>
+    </section>
 
-    <div id="location" class="tab-content" style="display:none;">
-        <h2>Location</h2>
-        <p>Sardarshahar, Churu (Raj)</p>
-    </div>
+    <!-- Gallery Section -->
+    <section id="gallery" aria-label="Gallery" class="animate-section">
+      <h2>Gallery</h2>
+      <div class="gallery" role="list">
+        <!-- Clip art style images from openclipart.org -->
+        <img src="https://openclipart.org/download/2821" alt="Clip art of team collaboration" role="listitem" loading="lazy" />
+        <img src="https://openclipart.org/download/2822" alt="Clip art of workshop session" role="listitem" loading="lazy" />
+        <img src="https://openclipart.org/download/2823" alt="Clip art of event celebration" role="listitem" loading="lazy" />
+        <img src="https://openclipart.org/download/2824" alt="Clip art of project planning" role="listitem" loading="lazy" />
+        <img src="https://openclipart.org/download/2825" alt="Clip art of feedback meeting" role="listitem" loading="lazy" />
+        <img src="https://openclipart.org/download/2826" alt="Clip art of learning materials" role="listitem" loading="lazy" />
+      </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2023 Bharat Kumar Jalan. All rights reserved.</p>
-    </footer>
+    <!-- Contact Section -->
+    <section id="contact" aria-label="Contact" class="animate-section">
+      <h2>Contact</h2>
+      <div class="contact-info">
+        <p><strong>Phone:</strong> 7427800483</p>
+        <p><strong>Email:</strong> bharatjalan02@gmail.com</p>
+        <p><strong>Location:</strong> Sardarshahar, Churu (Raj)</p>
+      </div>
+      <div class="map-container" aria-label="Map showing location of Sardarshahar, Churu, Rajasthan">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14404.09592792704!2d74.4832525!3d28.435489!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDI2JzQxLjAiTiA3NMKwMjknMzAuMyJF!5e0!3m2!1sen!2sin!4v1680380000000!5m2!1sen!2sin"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Map of Sardarshahar, Churu, Rajasthan"
+        ></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Animate sections on scroll
+    const sections = document.querySelectorAll('section.animate-section');
+    const options = {
+      threshold: 0.15
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+    sections.forEach(section => observer.observe(section));
+  </script>
 </body>
 </html>
